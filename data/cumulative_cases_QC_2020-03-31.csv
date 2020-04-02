@@ -1,0 +1,59 @@
+ID,Date,type,value
+1,2020-03-03,Nombre cumulatif de cas,1
+1,2020-03-03,Nouveaux cas,NA
+2,2020-03-04,Nombre cumulatif de cas,2
+2,2020-03-04,Nouveaux cas,1
+3,2020-03-05,Nombre cumulatif de cas,3
+3,2020-03-05,Nouveaux cas,1
+4,2020-03-06,Nombre cumulatif de cas,3
+4,2020-03-06,Nouveaux cas,NA
+5,2020-03-07,Nombre cumulatif de cas,4
+5,2020-03-07,Nouveaux cas,1
+6,2020-03-08,Nombre cumulatif de cas,4
+6,2020-03-08,Nouveaux cas,NA
+7,2020-03-09,Nombre cumulatif de cas,5
+7,2020-03-09,Nouveaux cas,1
+8,2020-03-10,Nombre cumulatif de cas,8
+8,2020-03-10,Nouveaux cas,3
+9,2020-03-11,Nombre cumulatif de cas,13
+9,2020-03-11,Nouveaux cas,5
+10,2020-03-12,Nombre cumulatif de cas,17
+10,2020-03-12,Nouveaux cas,4
+11,2020-03-13,Nombre cumulatif de cas,24
+11,2020-03-13,Nouveaux cas,7
+12,2020-03-14,Nombre cumulatif de cas,39
+12,2020-03-14,Nouveaux cas,15
+13,2020-03-15,Nombre cumulatif de cas,50
+13,2020-03-15,Nouveaux cas,11
+14,2020-03-16,Nombre cumulatif de cas,74
+14,2020-03-16,Nouveaux cas,24
+15,2020-03-17,Nombre cumulatif de cas,94
+15,2020-03-17,Nouveaux cas,20
+16,2020-03-18,Nombre cumulatif de cas,121
+16,2020-03-18,Nouveaux cas,27
+17,2020-03-19,Nombre cumulatif de cas,139
+17,2020-03-19,Nouveaux cas,18
+18,2020-03-20,Nombre cumulatif de cas,181
+18,2020-03-20,Nouveaux cas,42
+19,2020-03-21,Nombre cumulatif de cas,219
+19,2020-03-21,Nouveaux cas,38
+20,2020-03-22,Nombre cumulatif de cas,628
+20,2020-03-22,Nouveaux cas,409
+21,2020-03-23,Nombre cumulatif de cas,1013
+21,2020-03-23,Nouveaux cas,385
+22,2020-03-24,Nombre cumulatif de cas,1339
+22,2020-03-24,Nouveaux cas,326
+23,2020-03-25,Nombre cumulatif de cas,1629
+23,2020-03-25,Nouveaux cas,290
+24,2020-03-26,Nombre cumulatif de cas,2021
+24,2020-03-26,Nouveaux cas,392
+25,2020-03-27,Nombre cumulatif de cas,2498
+25,2020-03-27,Nouveaux cas,477
+26,2020-03-28,Nombre cumulatif de cas,2840
+26,2020-03-28,Nouveaux cas,342
+27,2020-03-29,Nombre cumulatif de cas,3430
+27,2020-03-29,Nouveaux cas,590
+28,2020-03-30,Nombre cumulatif de cas,4162
+28,2020-03-30,Nouveaux cas,732
+29,2020-03-31,Nombre cumulatif de cas,4611
+29,2020-03-31,Nouveaux cas,449

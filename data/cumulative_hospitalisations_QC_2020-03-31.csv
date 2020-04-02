@@ -1,0 +1,35 @@
+ID,Date,type,value
+1,2020-03-15,Hospitalisations,2
+1,2020-03-15,Soins intensifs,0
+2,2020-03-16,Hospitalisations,5
+2,2020-03-16,Soins intensifs,0
+3,2020-03-17,Hospitalisations,6
+3,2020-03-17,Soins intensifs,4
+4,2020-03-18,Hospitalisations,7
+4,2020-03-18,Soins intensifs,4
+5,2020-03-19,Hospitalisations,10
+5,2020-03-19,Soins intensifs,6
+6,2020-03-20,Hospitalisations,19
+6,2020-03-20,Soins intensifs,10
+7,2020-03-21,Hospitalisations,24
+7,2020-03-21,Soins intensifs,13
+8,2020-03-22,Hospitalisations,45
+8,2020-03-22,Soins intensifs,20
+9,2020-03-23,Hospitalisations,67
+9,2020-03-23,Soins intensifs,31
+10,2020-03-24,Hospitalisations,78
+10,2020-03-24,Soins intensifs,35
+11,2020-03-25,Hospitalisations,106
+11,2020-03-25,Soins intensifs,43
+12,2020-03-26,Hospitalisations,141
+12,2020-03-26,Soins intensifs,50
+13,2020-03-27,Hospitalisations,164
+13,2020-03-27,Soins intensifs,57
+14,2020-03-28,Hospitalisations,192
+14,2020-03-28,Soins intensifs,72
+15,2020-03-29,Hospitalisations,235
+15,2020-03-29,Soins intensifs,78
+16,2020-03-30,Hospitalisations,286
+16,2020-03-30,Soins intensifs,82
+17,2020-03-31,Hospitalisations,307
+17,2020-03-31,Soins intensifs,82

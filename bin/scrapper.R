@@ -1,349 +1,13 @@
----
-title: "Quebec COVID19 Data March 31, 2020"
-author: "by Sahir Bhatnagar"
-date: "2020-04-02"
-output:
-  html_document:
-    toc: true
-    toc_float: false
-    number_sections: true
-    toc_depth: 4
-    keep_md: true
-editor_options: 
-  chunk_output_type: console
----
-
-
-
-
-# Load Required Packages {-}
-
-
-```r
+# ---- load-packages ----
 pacman::p_load(jsonlite)
 pacman::p_load(tidyverse)
 pacman::p_load(lubridate)
 pacman::p_load(colorspace)
 pacman::p_load(ggthemes)
-```
 
+## ---- clean-data-7 ----
 
 
-
-# 1- Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la COVID-19 au Québec {-}
-
-
-```r
-# Data cleaning -----------------------------------------------------------
-
-graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/6/public/values?alt=json")
-
-ds1 <- graph1$feed$entry$`gs$cell`
-# need to add missing row for march 3 for nouveaux cas
-ds1 <- rbind(ds1[1:5, ], c(2, 3, 0, 0), ds1[-(1:5), ])
-
-DT1 <- ds1[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
-DT1 <- DT1 %>%
-  mutate(
-    type = rep(ds1$`$t`[1:3], max(DT1$row) - 1),
-    ID = rep(seq_len(max(DT1$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Nombre cumulatif de cas` = as.numeric(`Nombre cumulatif de cas`),
-    `Nouveaux cas` = as.numeric(`Nouveaux cas`)
-  ) %>%
-  pivot_longer(
-    cols = c(-ID, -Date),
-    names_to = "type"
-  ) %>%
-  mutate(value = ifelse(value == 0, NA, value))
-
-readr::write_csv(DT1, path = here::here(sprintf("data/cumulative_cases_QC_%s.csv", max(DT1$Date))))
-```
-
-
-```r
-# Plot  -------------------------------------------------------------------
-
-dates <- unique(filter(DT1, type == "Nombre cumulatif de cas")$Date)
-
-ggplot() +
-  geom_line(
-    data = filter(DT1, type == "Nombre cumulatif de cas"),
-    mapping = aes(x = Date, y = value, color = type)
-  ) +
-  geom_point(
-    data = filter(DT1, type == "Nombre cumulatif de cas"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    size = 2, pch = 21
-  ) +
-  geom_col(
-    data = filter(DT1, type == "Nouveaux cas"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    width = 0.5
-  ) +
-  ggthemes::theme_hc() +
-  # ylim(c(0, 350)) +
-  scale_y_continuous(breaks = seq(0, 5000, 1000), limits = c(0, 5000)) +
-  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_blank(),
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  ) +
-  colorspace::scale_fill_discrete_qualitative() +
-  colorspace::scale_color_discrete_qualitative() +
-  labs(title = "1 - Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la \nCOVID-19 au Québec") +
-  xlab("") +
-  ylab("")
-```
-
-![](index_files/figure-html/graph-1-1.png)<!-- -->
-
-
-
-# 2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec {-}
-
-
-```r
-# Data cleaning -----------------------------------------------------------
-
-graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/5/public/values?alt=json")
-
-
-ds2 <- graph2$feed$entry$`gs$cell`
-# need to add missing row for march 18 for nouveaux deces
-ds2 <- rbind(ds2[1:5, ], c(2, 3, 0, 0), ds2[-(1:5), ])
-
-DT2 <- ds2[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
-DT2 <- DT2 %>%
-  mutate(
-    type = rep(ds2$`$t`[1:3], max(DT2$row) - 1),
-    ID = rep(seq_len(max(DT2$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Nombre cumulatif de décès` = as.numeric(`Nombre cumulatif de décès`),
-    `Nouveaux décès` = as.numeric(`Nouveaux décès`)
-  ) %>%
-  pivot_longer(
-    cols = c(-ID, -Date),
-    names_to = "type"
-  ) %>%
-  mutate(value = ifelse(value == 0, NA, value))
-```
-
-
-```r
-# Plot --------------------------------------------------------------------
-
-dates <- unique(filter(DT2, type == "Nombre cumulatif de décès")$Date)
-
-ggplot() +
-  geom_line(
-    data = filter(DT2, type == "Nombre cumulatif de décès"),
-    mapping = aes(x = Date, y = value, color = type)
-  ) +
-  geom_point(
-    data = filter(DT2, type == "Nombre cumulatif de décès"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    size = 2, pch = 21
-  ) +
-  geom_col(
-    data = filter(DT2, type == "Nouveaux décès"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    width = 0.5
-  ) +
-  ggthemes::theme_hc() +
-  scale_y_continuous(breaks = seq(0, 40, 10), limits = c(0, 40)) +
-  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_blank(),
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  ) +
-  colorspace::scale_fill_discrete_qualitative() +
-  colorspace::scale_color_discrete_qualitative() +
-  labs(title = "2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec") +
-  xlab("") +
-  ylab("")
-```
-
-![](index_files/figure-html/graph-2-1.png)<!-- -->
-
-```r
-readr::write_csv(DT2, path = here::here(sprintf("data/cumulative_deaths_QC_%s.csv", max(DT1$Date))))
-```
-
-
-
-# 3 - Évolution quotidienne du nombre d'hospitalisations liées à la COVID-19 au Québec {-}
-
-
-```r
-# Data cleaning -----------------------------------------------------------
-graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/4/public/values?alt=json")
-
-ds3 <- graph3$feed$entry$`gs$cell`
-DT3 <- ds3[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
-DT3 <- DT3 %>%
-  mutate(
-    type = rep(ds3$`$t`[1:3], max(DT3$row) - 1),
-    ID = rep(seq_len(max(DT3$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Hospitalisations` = as.numeric(`Hospitalisations`),
-    `Soins intensifs` = as.numeric(`Soins intensifs`)
-  ) %>%
-  pivot_longer(
-    cols = c(-ID, -Date),
-    names_to = "type"
-  )
-```
-
-
-```r
-# Plot --------------------------------------------------------------------
-
-dates <- unique(filter(DT3, type == "Hospitalisations")$Date)
-
-ggplot() +
-  geom_line(
-    data = filter(DT3, type == "Hospitalisations"),
-    mapping = aes(x = Date, y = value, color = type)
-  ) +
-  geom_point(
-    data = filter(DT3, type == "Hospitalisations"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    size = 2, pch = 21
-  ) +
-  geom_area(
-    data = filter(DT3, type == "Hospitalisations"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    position = "identity", alpha = 0.3
-  ) +
-  geom_col(
-    data = filter(DT3, type == "Soins intensifs"),
-    mapping = aes(x = Date, y = value, color = type, fill = type),
-    width = 0.5
-  ) +
-  ggthemes::theme_hc() +
-  scale_y_continuous(breaks = seq(0, 350, 50), limits = c(0, 350)) +
-  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_blank(),
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  ) +
-  colorspace::scale_fill_discrete_qualitative() +
-  colorspace::scale_color_discrete_qualitative() +
-  labs(title = "3 - Évolution quotidienne du nombre d'hospitalisations liées à la COVID-19 au Québec") +
-  xlab("") +
-  ylab("")
-```
-
-![](index_files/figure-html/graph-3-1.png)<!-- -->
-
-```r
-readr::write_csv(DT3, path = here::here(sprintf("data/cumulative_hospitalisations_QC_%s.csv", max(DT1$Date))))
-```
-
-
-
-# 4 - Évolution quotidienne des nombres cumulatifs de cas confirmés et de personnes avec des analyses négative {-}
-
-
-```r
-# Data cleaning -----------------------------------------------------------
-
-graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1RDtm_2tWgyGlxA7F3b5YSlriw5hic8dX4hopwBhQ_NQ/1/public/values?alt=json")
-
-ds4 <- graph4$feed$entry$`gs$cell`
-DT4 <- ds4[-c(1:4), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
-DT4 <- DT4 %>%
-  mutate(
-    type = rep(ds4$`$t`[1:4], max(DT4$row) - 1),
-    ID = rep(seq_len(max(DT4$row) - 1), each = 4)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Cumul des personnes avec des analyses négatives` = as.numeric(`Cumul des personnes avec des analyses négatives`),
-    `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`),
-    `Sous investigation` = as.numeric(`Sous investigation`)
-  ) %>%
-  pivot_longer(
-    cols = c(-ID, -Date),
-    names_to = "type"
-  )
-```
-
-
-```r
-# Plot --------------------------------------------------------------------
-
-DT4 %>%
-  filter(type %in% c("Cumul des personnes avec des analyses négatives", "Cumul de cas confirmés")) %>%
-  ggplot(mapping = aes(x = Date, y = value, color = type, fill = type)) +
-  geom_line() +
-  geom_point(size = 2, pch = 21) +
-  geom_area(position = "identity", alpha = 0.3) +
-  ggthemes::theme_hc() +
-  ylim(c(0, 80000)) +
-  theme(legend.position = "bottom", legend.title = element_blank()) +
-  colorspace::scale_fill_discrete_qualitative() +
-  colorspace::scale_color_discrete_qualitative() +
-  labs(title = "4 - Évolution quotidienne des nombres cumulatifs de cas confirmés et de\n personnes avec des analyses négative") +
-  xlab("") +
-  ylab("")
-```
-
-![](index_files/figure-html/graph-4-1.png)<!-- -->
-
-```r
-readr::write_csv(DT4, path = here::here(sprintf("data/cumulative_case_and_negatives_QC_%s.csv", max(DT1$Date))))
-```
-
-
-
-# 7 - Cas confirmés selon le groupe d'âge (répartition et taux pour 100 000) {-}
-
-
-
-```r
 # Data cleaning -----------------------------------------------------------
 
 graph7 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1wxezvQXMFUGVibx2ZuSkYzqio6l564TfgTNZESWW4KU/2/public/values?alt=json")
@@ -375,10 +39,11 @@ DT7 <- DT7 %>%
 
 
 readr::write_csv(DT7, path = here::here(sprintf("data/cases_by_age_QC_%s.csv", max(DT1$Date))))
-```
 
 
-```r
+## ---- graph-7 ----
+
+
 # Plot --------------------------------------------------------------------
 
 ggplot() +
@@ -416,18 +81,303 @@ ggplot() +
   ) +
   colorspace::scale_fill_discrete_qualitative() +
   colorspace::scale_color_discrete_qualitative()
-```
-
-![](index_files/figure-html/graph-7-1.png)<!-- -->
 
 
 
 
-```r
-knitr::knit_exit()
-```
+## ---- clean-data-1 ----
+
+
+# Data cleaning -----------------------------------------------------------
+
+graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/6/public/values?alt=json")
+
+ds1 <- graph1$feed$entry$`gs$cell`
+# need to add missing row for march 3 for nouveaux cas
+ds1 <- rbind(ds1[1:5, ], c(2, 3, 0, 0), ds1[-(1:5), ])
+
+DT1 <- ds1[-c(1:3), ] %>%
+  mutate(
+    row = as.numeric(as.character(row)),
+    col = as.numeric(as.character(col))
+  ) %>%
+  rename(value = `$t`)
+
+DT1 <- DT1 %>%
+  mutate(
+    type = rep(ds1$`$t`[1:3], max(DT1$row) - 1),
+    ID = rep(seq_len(max(DT1$row) - 1), each = 3)
+  ) %>%
+  dplyr::select(-row, -col, -numericValue) %>%
+  pivot_wider(names_from = type, values_from = value) %>%
+  mutate(
+    Date = lubridate::as_date(dmy(Date)),
+    `Nombre cumulatif de cas` = as.numeric(`Nombre cumulatif de cas`),
+    `Nouveaux cas` = as.numeric(`Nouveaux cas`)
+  ) %>%
+  pivot_longer(
+    cols = c(-ID, -Date),
+    names_to = "type"
+  ) %>%
+  mutate(value = ifelse(value == 0, NA, value))
+
+readr::write_csv(DT1, path = here::here(sprintf("data/cumulative_cases_QC_%s.csv", max(DT1$Date))))
+
+## ---- graph-1 ----
+
+
+# Plot  -------------------------------------------------------------------
+
+dates <- unique(filter(DT1, type == "Nombre cumulatif de cas")$Date)
+
+ggplot() +
+  geom_line(
+    data = filter(DT1, type == "Nombre cumulatif de cas"),
+    mapping = aes(x = Date, y = value, color = type)
+  ) +
+  geom_point(
+    data = filter(DT1, type == "Nombre cumulatif de cas"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    size = 2, pch = 21
+  ) +
+  geom_col(
+    data = filter(DT1, type == "Nouveaux cas"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    width = 0.5
+  ) +
+  ggthemes::theme_hc() +
+  # ylim(c(0, 350)) +
+  scale_y_continuous(breaks = seq(0, 5000, 1000), limits = c(0, 5000)) +
+  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  labs(title = "1 - Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la \nCOVID-19 au Québec") +
+  xlab("") +
+  ylab("")
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+## ---- clean-data-2 ----
+
+
+# Data cleaning -----------------------------------------------------------
+
+graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/5/public/values?alt=json")
+
+
+ds2 <- graph2$feed$entry$`gs$cell`
+# need to add missing row for march 18 for nouveaux deces
+ds2 <- rbind(ds2[1:5, ], c(2, 3, 0, 0), ds2[-(1:5), ])
+
+DT2 <- ds2[-c(1:3), ] %>%
+  mutate(
+    row = as.numeric(as.character(row)),
+    col = as.numeric(as.character(col))
+  ) %>%
+  rename(value = `$t`)
+
+DT2 <- DT2 %>%
+  mutate(
+    type = rep(ds2$`$t`[1:3], max(DT2$row) - 1),
+    ID = rep(seq_len(max(DT2$row) - 1), each = 3)
+  ) %>%
+  dplyr::select(-row, -col, -numericValue) %>%
+  pivot_wider(names_from = type, values_from = value) %>%
+  mutate(
+    Date = lubridate::as_date(dmy(Date)),
+    `Nombre cumulatif de décès` = as.numeric(`Nombre cumulatif de décès`),
+    `Nouveaux décès` = as.numeric(`Nouveaux décès`)
+  ) %>%
+  pivot_longer(
+    cols = c(-ID, -Date),
+    names_to = "type"
+  ) %>%
+  mutate(value = ifelse(value == 0, NA, value))
+
+## ---- graph-2 ----
+
+
+# Plot --------------------------------------------------------------------
+
+dates <- unique(filter(DT2, type == "Nombre cumulatif de décès")$Date)
+
+ggplot() +
+  geom_line(
+    data = filter(DT2, type == "Nombre cumulatif de décès"),
+    mapping = aes(x = Date, y = value, color = type)
+  ) +
+  geom_point(
+    data = filter(DT2, type == "Nombre cumulatif de décès"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    size = 2, pch = 21
+  ) +
+  geom_col(
+    data = filter(DT2, type == "Nouveaux décès"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    width = 0.5
+  ) +
+  ggthemes::theme_hc() +
+  scale_y_continuous(breaks = seq(0, 40, 10), limits = c(0, 40)) +
+  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  labs(title = "2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec") +
+  xlab("") +
+  ylab("")
+
+readr::write_csv(DT2, path = here::here(sprintf("data/cumulative_deaths_QC_%s.csv", max(DT1$Date))))
+
+
+
+## ---- clean-data-3 ----
+
+# Data cleaning -----------------------------------------------------------
+graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/4/public/values?alt=json")
+
+ds3 <- graph3$feed$entry$`gs$cell`
+DT3 <- ds3[-c(1:3), ] %>%
+  mutate(
+    row = as.numeric(as.character(row)),
+    col = as.numeric(as.character(col))
+  ) %>%
+  rename(value = `$t`)
+
+DT3 <- DT3 %>%
+  mutate(
+    type = rep(ds3$`$t`[1:3], max(DT3$row) - 1),
+    ID = rep(seq_len(max(DT3$row) - 1), each = 3)
+  ) %>%
+  dplyr::select(-row, -col, -numericValue) %>%
+  pivot_wider(names_from = type, values_from = value) %>%
+  mutate(
+    Date = lubridate::as_date(dmy(Date)),
+    `Hospitalisations` = as.numeric(`Hospitalisations`),
+    `Soins intensifs` = as.numeric(`Soins intensifs`)
+  ) %>%
+  pivot_longer(
+    cols = c(-ID, -Date),
+    names_to = "type"
+  )
+
+## ---- graph-3 ----
+
+
+# Plot --------------------------------------------------------------------
+
+dates <- unique(filter(DT3, type == "Hospitalisations")$Date)
+
+ggplot() +
+  geom_line(
+    data = filter(DT3, type == "Hospitalisations"),
+    mapping = aes(x = Date, y = value, color = type)
+  ) +
+  geom_point(
+    data = filter(DT3, type == "Hospitalisations"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    size = 2, pch = 21
+  ) +
+  geom_area(
+    data = filter(DT3, type == "Hospitalisations"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    position = "identity", alpha = 0.3
+  ) +
+  geom_col(
+    data = filter(DT3, type == "Soins intensifs"),
+    mapping = aes(x = Date, y = value, color = type, fill = type),
+    width = 0.5
+  ) +
+  ggthemes::theme_hc() +
+  scale_y_continuous(breaks = seq(0, 350, 50), limits = c(0, 350)) +
+  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  labs(title = "3 - Évolution quotidienne du nombre d'hospitalisations liées à la COVID-19 au Québec") +
+  xlab("") +
+  ylab("")
+
+readr::write_csv(DT3, path = here::here(sprintf("data/cumulative_hospitalisations_QC_%s.csv", max(DT1$Date))))
+
+
+
+## ---- clean-data-4 ----
+
+
+# Data cleaning -----------------------------------------------------------
+
+graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1RDtm_2tWgyGlxA7F3b5YSlriw5hic8dX4hopwBhQ_NQ/1/public/values?alt=json")
+
+ds4 <- graph4$feed$entry$`gs$cell`
+DT4 <- ds4[-c(1:4), ] %>%
+  mutate(
+    row = as.numeric(as.character(row)),
+    col = as.numeric(as.character(col))
+  ) %>%
+  rename(value = `$t`)
+
+DT4 <- DT4 %>%
+  mutate(
+    type = rep(ds4$`$t`[1:4], max(DT4$row) - 1),
+    ID = rep(seq_len(max(DT4$row) - 1), each = 4)
+  ) %>%
+  dplyr::select(-row, -col, -numericValue) %>%
+  pivot_wider(names_from = type, values_from = value) %>%
+  mutate(
+    Date = lubridate::as_date(dmy(Date)),
+    `Cumul des personnes avec des analyses négatives` = as.numeric(`Cumul des personnes avec des analyses négatives`),
+    `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`),
+    `Sous investigation` = as.numeric(`Sous investigation`)
+  ) %>%
+  pivot_longer(
+    cols = c(-ID, -Date),
+    names_to = "type"
+  )
+
+## ---- graph-4 ----
+
+
+# Plot --------------------------------------------------------------------
+
+DT4 %>%
+  filter(type %in% c("Cumul des personnes avec des analyses négatives", "Cumul de cas confirmés")) %>%
+  ggplot(mapping = aes(x = Date, y = value, color = type, fill = type)) +
+  geom_line() +
+  geom_point(size = 2, pch = 21) +
+  geom_area(position = "identity", alpha = 0.3) +
+  ggthemes::theme_hc() +
+  ylim(c(0, 80000)) +
+  theme(legend.position = "bottom", legend.title = element_blank()) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  labs(title = "4 - Évolution quotidienne des nombres cumulatifs de cas confirmés et de\n personnes avec des analyses négative") +
+  xlab("") +
+  ylab("")
+
+
+readr::write_csv(DT4, path = here::here(sprintf("data/cumulative_case_and_negatives_QC_%s.csv", max(DT1$Date))))
 

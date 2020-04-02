@@ -1,5 +1,5 @@
 ---
-title: "COVID19"
+title: "Quebec COVID19 Data March 31, 2020"
 author: "by Sahir Bhatnagar"
 date: "`r Sys.Date()`"
 output:
@@ -14,8 +14,75 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, fig.width = 9, fig.height = 8)
+pacman::p_load(here)
+knitr::read_chunk(here::here("bin/scrapper.R"))
 ```
+
+
+# Load Required Packages {-}
+
+```{r load-packages}
+```
+
+
+
+
+# 1- Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la COVID-19 au Québec {-}
+
+```{r clean-data-1}
+```
+
+```{r graph-1}
+```
+
+
+
+# 2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec {-}
+
+```{r clean-data-2}
+```
+
+```{r graph-2}
+```
+
+
+
+# 3 - Évolution quotidienne du nombre d'hospitalisations liées à la COVID-19 au Québec {-}
+
+```{r clean-data-3}
+```
+
+```{r graph-3}
+```
+
+
+
+# 4 - Évolution quotidienne des nombres cumulatifs de cas confirmés et de personnes avec des analyses négative {-}
+
+```{r clean-data-4}
+```
+
+```{r graph-4}
+```
+
+
+
+# 7 - Cas confirmés selon le groupe d'âge (répartition et taux pour 100 000) {-}
+
+
+```{r clean-data-7}
+```
+
+```{r graph-7}
+```
+
+
+
+```{r}
+knitr::knit_exit()
+```
+
 
 # Pull data
 

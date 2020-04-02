@@ -1,0 +1,103 @@
+ID,Date,type,value
+1,2020-02-27,Cumul des personnes avec des analyses négatives,91
+1,2020-02-27,Cumul de cas confirmés,1
+1,2020-02-27,Sous investigation,21
+2,2020-02-28,Cumul des personnes avec des analyses négatives,104
+2,2020-02-28,Cumul de cas confirmés,1
+2,2020-02-28,Sous investigation,8
+3,2020-02-29,Cumul des personnes avec des analyses négatives,138
+3,2020-02-29,Cumul de cas confirmés,1
+3,2020-02-29,Sous investigation,10
+4,2020-03-01,Cumul des personnes avec des analyses négatives,189
+4,2020-03-01,Cumul de cas confirmés,1
+4,2020-03-01,Sous investigation,17
+5,2020-03-02,Cumul des personnes avec des analyses négatives,203
+5,2020-03-02,Cumul de cas confirmés,1
+5,2020-03-02,Sous investigation,7
+6,2020-03-03,Cumul des personnes avec des analyses négatives,203
+6,2020-03-03,Cumul de cas confirmés,1
+6,2020-03-03,Sous investigation,33
+7,2020-03-04,Cumul des personnes avec des analyses négatives,242
+7,2020-03-04,Cumul de cas confirmés,2
+7,2020-03-04,Sous investigation,20
+8,2020-03-05,Cumul des personnes avec des analyses négatives,260
+8,2020-03-05,Cumul de cas confirmés,3
+8,2020-03-05,Sous investigation,40
+9,2020-03-06,Cumul des personnes avec des analyses négatives,303
+9,2020-03-06,Cumul de cas confirmés,3
+9,2020-03-06,Sous investigation,41
+10,2020-03-07,Cumul des personnes avec des analyses négatives,340
+10,2020-03-07,Cumul de cas confirmés,4
+10,2020-03-07,Sous investigation,10
+11,2020-03-08,Cumul des personnes avec des analyses négatives,376
+11,2020-03-08,Cumul de cas confirmés,4
+11,2020-03-08,Sous investigation,25
+12,2020-03-09,Cumul des personnes avec des analyses négatives,465
+12,2020-03-09,Cumul de cas confirmés,5
+12,2020-03-09,Sous investigation,91
+13,2020-03-10,Cumul des personnes avec des analyses négatives,570
+13,2020-03-10,Cumul de cas confirmés,8
+13,2020-03-10,Sous investigation,136
+14,2020-03-11,Cumul des personnes avec des analyses négatives,798
+14,2020-03-11,Cumul de cas confirmés,13
+14,2020-03-11,Sous investigation,266
+15,2020-03-12,Cumul des personnes avec des analyses négatives,1079
+15,2020-03-12,Cumul de cas confirmés,17
+15,2020-03-12,Sous investigation,646
+16,2020-03-13,Cumul des personnes avec des analyses négatives,1399
+16,2020-03-13,Cumul de cas confirmés,24
+16,2020-03-13,Sous investigation,850
+17,2020-03-14,Cumul des personnes avec des analyses négatives,2270
+17,2020-03-14,Cumul de cas confirmés,39
+17,2020-03-14,Sous investigation,1480
+18,2020-03-15,Cumul des personnes avec des analyses négatives,3079
+18,2020-03-15,Cumul de cas confirmés,50
+18,2020-03-15,Sous investigation,3073
+19,2020-03-16,Cumul des personnes avec des analyses négatives,4778
+19,2020-03-16,Cumul de cas confirmés,74
+19,2020-03-16,Sous investigation,2949
+20,2020-03-17,Cumul des personnes avec des analyses négatives,5213
+20,2020-03-17,Cumul de cas confirmés,94
+20,2020-03-17,Sous investigation,3627
+21,2020-03-18,Cumul des personnes avec des analyses négatives,6331
+21,2020-03-18,Cumul de cas confirmés,121
+21,2020-03-18,Sous investigation,3997
+22,2020-03-19,Cumul des personnes avec des analyses négatives,7666
+22,2020-03-19,Cumul de cas confirmés,139
+22,2020-03-19,Sous investigation,2403
+23,2020-03-20,Cumul des personnes avec des analyses négatives,9242
+23,2020-03-20,Cumul de cas confirmés,181
+23,2020-03-20,Sous investigation,1512
+24,2020-03-21,Cumul des personnes avec des analyses négatives,9786
+24,2020-03-21,Cumul de cas confirmés,219
+24,2020-03-21,Sous investigation,2063
+25,2020-03-22,Cumul des personnes avec des analyses négatives,11211
+25,2020-03-22,Cumul de cas confirmés,628
+25,2020-03-22,Sous investigation,1888
+26,2020-03-23,Cumul des personnes avec des analyses négatives,12202
+26,2020-03-23,Cumul de cas confirmés,1013
+26,2020-03-23,Sous investigation,2548
+27,2020-03-24,Cumul des personnes avec des analyses négatives,26634
+27,2020-03-24,Cumul de cas confirmés,1339
+27,2020-03-24,Sous investigation,2998
+28,2020-03-25,Cumul des personnes avec des analyses négatives,31854
+28,2020-03-25,Cumul de cas confirmés,1629
+28,2020-03-25,Sous investigation,2622
+29,2020-03-26,Cumul des personnes avec des analyses négatives,32335
+29,2020-03-26,Cumul de cas confirmés,2021
+29,2020-03-26,Sous investigation,7236
+30,2020-03-27,Cumul des personnes avec des analyses négatives,43589
+30,2020-03-27,Cumul de cas confirmés,2498
+30,2020-03-27,Sous investigation,6757
+31,2020-03-28,Cumul des personnes avec des analyses négatives,49364
+31,2020-03-28,Cumul de cas confirmés,2840
+31,2020-03-28,Sous investigation,6313
+32,2020-03-29,Cumul des personnes avec des analyses négatives,56285
+32,2020-03-29,Cumul de cas confirmés,3430
+32,2020-03-29,Sous investigation,6200
+33,2020-03-30,Cumul des personnes avec des analyses négatives,63378
+33,2020-03-30,Cumul de cas confirmés,4162
+33,2020-03-30,Sous investigation,5601
+34,2020-03-31,Cumul des personnes avec des analyses négatives,65082
+34,2020-03-31,Cumul de cas confirmés,4611
+34,2020-03-31,Sous investigation,5770
