@@ -10,7 +10,7 @@ pacman::p_load(ggthemes)
 
 # Data cleaning -----------------------------------------------------------
 
-graph7 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1wxezvQXMFUGVibx2ZuSkYzqio6l564TfgTNZESWW4KU/2/public/values?alt=json")
+graph7 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/6/public/values?alt=json")
 
 ds7 <- graph7$feed$entry$`gs$cell`
 
@@ -90,7 +90,7 @@ ggplot() +
 
 # Data cleaning -----------------------------------------------------------
 
-graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/6/public/values?alt=json")
+graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/1/public/values?alt=json")
 
 ds1 <- graph1$feed$entry$`gs$cell`
 # need to add missing row for march 3 for nouveaux cas
@@ -147,7 +147,7 @@ ggplot() +
   ) +
   ggthemes::theme_hc() +
   # ylim(c(0, 350)) +
-  scale_y_continuous(breaks = seq(0, 5000, 1000), limits = c(0, 5000)) +
+  scale_y_continuous(breaks = seq(0, 6000, 1000), limits = c(0, 6000)) +
   scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
   theme(
     legend.position = "bottom",
@@ -178,7 +178,7 @@ ggplot() +
 
 # Data cleaning -----------------------------------------------------------
 
-graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/5/public/values?alt=json")
+graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/2/public/values?alt=json")
 
 
 ds2 <- graph2$feed$entry$`gs$cell`
@@ -253,7 +253,7 @@ readr::write_csv(DT2, path = here::here(sprintf("data/cumulative_deaths_QC_%s.cs
 ## ---- clean-data-3 ----
 
 # Data cleaning -----------------------------------------------------------
-graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1IpvUx_uqxsTQdHWF0JHXKFQMa1XRCk927J1XXZU7KBw/4/public/values?alt=json")
+graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/3/public/values?alt=json")
 
 ds3 <- graph3$feed$entry$`gs$cell`
 DT3 <- ds3[-c(1:3), ] %>%
@@ -308,7 +308,7 @@ ggplot() +
     width = 0.5
   ) +
   ggthemes::theme_hc() +
-  scale_y_continuous(breaks = seq(0, 350, 50), limits = c(0, 350)) +
+  scale_y_continuous(breaks = seq(0, 400, 50), limits = c(0, 400)) +
   scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
   theme(
     legend.position = "bottom",
@@ -330,10 +330,10 @@ readr::write_csv(DT3, path = here::here(sprintf("data/cumulative_hospitalisation
 
 # Data cleaning -----------------------------------------------------------
 
-graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1RDtm_2tWgyGlxA7F3b5YSlriw5hic8dX4hopwBhQ_NQ/1/public/values?alt=json")
+graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/4/public/values?alt=json")
 
 ds4 <- graph4$feed$entry$`gs$cell`
-DT4 <- ds4[-c(1:4), ] %>%
+DT4 <- ds4[-c(1:3), ] %>%
   mutate(
     row = as.numeric(as.character(row)),
     col = as.numeric(as.character(col))
@@ -342,16 +342,16 @@ DT4 <- ds4[-c(1:4), ] %>%
 
 DT4 <- DT4 %>%
   mutate(
-    type = rep(ds4$`$t`[1:4], max(DT4$row) - 1),
-    ID = rep(seq_len(max(DT4$row) - 1), each = 4)
+    type = rep(ds4$`$t`[1:3], max(DT4$row) - 1),
+    ID = rep(seq_len(max(DT4$row) - 1), each = 3)
   ) %>%
   dplyr::select(-row, -col, -numericValue) %>%
   pivot_wider(names_from = type, values_from = value) %>%
   mutate(
     Date = lubridate::as_date(dmy(Date)),
     `Cumul des personnes avec des analyses négatives` = as.numeric(`Cumul des personnes avec des analyses négatives`),
-    `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`),
-    `Sous investigation` = as.numeric(`Sous investigation`)
+    `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`)
+    # `Sous investigation` = as.numeric(`Sous investigation`)
   ) %>%
   pivot_longer(
     cols = c(-ID, -Date),
