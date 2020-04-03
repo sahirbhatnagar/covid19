@@ -16,7 +16,27 @@ reproduced the graphs with `ggplot2`.
     [`bin`](https://github.com/sahirbhatnagar/covid19/tree/master/bin)
     folder
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-5.png)<!-- -->
+# Load Required Packages
+
+# 1- Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la COVID-19 au Québec
+
+![](README_files/figure-gfm/graph-1-1.png)<!-- -->
+
+# 2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec
+
+![](README_files/figure-gfm/graph-2-1.png)<!-- -->
+
+# 3 - Évolution quotidienne du nombre d’hospitalisations liées à la COVID-19 au Québec
+
+![](README_files/figure-gfm/graph-3-1.png)<!-- -->
+
+# 4 - Évolution quotidienne des nombres cumulatifs de cas confirmés et de personnes avec des analyses négative
+
+![](README_files/figure-gfm/graph-4-1.png)<!-- -->
+
+# 7 - Cas confirmés selon le groupe d’âge (répartition et taux pour 100 000)
+
+![](README_files/figure-gfm/graph-7-1.png)<!-- -->
 
 # Code of Conduct
 
