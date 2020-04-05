@@ -1,7 +1,7 @@
 ---
-title: "Quebec COVID19 Data April 1, 2020"
+title: "Quebec COVID19 Data April 3, 2020"
 author: "by Sahir Bhatnagar"
-date: "2020-04-03"
+date: "2020-04-05"
 output:
   html_document:
     toc: true
@@ -93,7 +93,7 @@ ggplot() +
   ) +
   ggthemes::theme_hc() +
   # ylim(c(0, 350)) +
-  scale_y_continuous(breaks = seq(0, 6000, 1000), limits = c(0, 6000)) +
+  # scale_y_continuous(breaks = seq(0, 6000, 1000), limits = c(0, 6000)) +
   scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
   theme(
     legend.position = "bottom",
@@ -172,7 +172,7 @@ ggplot() +
     width = 0.5
   ) +
   ggthemes::theme_hc() +
-  scale_y_continuous(breaks = seq(0, 40, 10), limits = c(0, 40)) +
+  # scale_y_continuous(breaks = seq(0, 40, 10), limits = c(0, 40)) +
   scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
   theme(
     legend.position = "bottom",
@@ -254,7 +254,7 @@ ggplot() +
     width = 0.5
   ) +
   ggthemes::theme_hc() +
-  scale_y_continuous(breaks = seq(0, 400, 50), limits = c(0, 400)) +
+  # scale_y_continuous(breaks = seq(0, 400, 50), limits = c(0, 400)) +
   scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
   theme(
     legend.position = "bottom",
@@ -301,7 +301,7 @@ DT4 <- DT4 %>%
   pivot_wider(names_from = type, values_from = value) %>%
   mutate(
     Date = lubridate::as_date(dmy(Date)),
-    `Cumul des personnes avec des analyses négatives` = as.numeric(`Cumul des personnes avec des analyses négatives`),
+    `Cumul de personnes avec analyses négatives` = as.numeric(`Cumul de personnes avec analyses négatives`),
     `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`)
     # `Sous investigation` = as.numeric(`Sous investigation`)
   ) %>%
@@ -316,13 +316,13 @@ DT4 <- DT4 %>%
 # Plot --------------------------------------------------------------------
 
 DT4 %>%
-  filter(type %in% c("Cumul des personnes avec des analyses négatives", "Cumul de cas confirmés")) %>%
+  filter(type %in% c("Cumul de personnes avec analyses négatives", "Cumul de cas confirmés")) %>%
   ggplot(mapping = aes(x = Date, y = value, color = type, fill = type)) +
   geom_line() +
   geom_point(size = 2, pch = 21) +
   geom_area(position = "identity", alpha = 0.3) +
   ggthemes::theme_hc() +
-  ylim(c(0, 80000)) +
+  # ylim(c(0, 80000)) +
   theme(legend.position = "bottom", legend.title = element_blank()) +
   colorspace::scale_fill_discrete_qualitative() +
   colorspace::scale_color_discrete_qualitative() +

@@ -1,5 +1,5 @@
 ---
-title: "Quebec COVID19 Data April 1, 2020"
+title: "Quebec COVID19 Data April 3, 2020"
 author: "by Sahir Bhatnagar"
 date: "`r Sys.Date()`"
 output:
