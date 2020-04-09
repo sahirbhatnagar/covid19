@@ -37,6 +37,33 @@ knitr::read_chunk(here::here("bin/scrapper.R"))
 ```
 
 
+## Log Ratios
+
+Let $y$ be the cumulative number of cases by day $t$. 
+
+\begin{align*}
+\log(y) & =  \beta_0 + \beta_1 t \\
+\end{align*}
+
+$\beta_1 is the percent change in daily cases
+
+\begin{align*}
+\log(y_{t+1}) - \log(y_{t}) & = \beta_0 + \beta_1 (t+1) - (\beta_0 + \beta_1 t) \\
+& = \beta_1 \\
+\log(\frac{y_{t+1}}{y_t}) & = \beta_1 \\
+\log(\frac{y_t + y_{t+1} - y_t}{y_t}) & = \beta_1 \\
+1 + \log(\frac{y_{t+1} - y_t}{y_t}) & = \beta_1 \\
+\end{align*}
+
+
+
+
+
+```{r graph-log-ratio}
+```
+
+
+
 
 # 2 - Évolution quotidienne des décès et du nombre cumulatif de décès liés à la COVID-19 au Québec {-}
 
@@ -76,6 +103,9 @@ knitr::read_chunk(here::here("bin/scrapper.R"))
 
 ```{r graph-7}
 ```
+
+
+
 
 
 

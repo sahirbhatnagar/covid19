@@ -22,6 +22,7 @@ editor_options:
 ```r
 pacman::p_load(jsonlite)
 pacman::p_load(tidyverse)
+pacman::p_load(tsibble) # for difference function
 pacman::p_load(lubridate)
 pacman::p_load(colorspace)
 pacman::p_load(ggthemes)
@@ -112,6 +113,71 @@ ggplot() +
 ```
 
 ![](index_files/figure-html/graph-1-1.png)<!-- -->
+
+
+## Log Ratios
+
+Let $y$ be the cumulative number of cases by day $t$. 
+
+\begin{align*}
+\log(y) & =  \beta_0 + \beta_1 t \\
+\end{align*}
+
+$\beta_1 is the percent change in daily cases
+
+\begin{align*}
+\log(y_{t+1}) - \log(y_{t}) & = \beta_0 + \beta_1 (t+1) - (\beta_0 + \beta_1 t) \\
+& = \beta_1 \\
+\log(\frac{y_{t+1}}{y_t}) & = \beta_1 \\
+\log(\frac{y_t + y_{t+1} - y_t}{y_t}) & = \beta_1 \\
+1 + \log(\frac{y_{t+1} - y_t}{y_t}) & = \beta_1 \\
+\end{align*}
+
+
+
+
+
+
+```r
+pacman::p_load(locfit)
+
+DT1 %>%
+  filter(type == "Nombre cumulatif de cas") %>%
+  mutate(cases_logratio = tsibble::difference(log(value))) %>%
+  filter(
+    Date >= as.Date("2020-03-01")
+  ) %>%
+  ggplot(aes(x = Date, y = cases_logratio)) +
+  geom_point() +
+  geom_smooth(method = "locfit") +
+  # geom_smooth(method = "loess") +
+  # xlab("Date") +
+  ggthemes::theme_hc() +
+  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  # scale_y_continuous(
+  #   "Daily increase in cumulative cases",
+  #   breaks = log(1+seq(0,100,by=10)/100),
+  #   labels = paste0(seq(0,100,by=10),"%"),
+  #   minor_breaks=NULL
+  # ) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  # labs(title = "1 - Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la \nCOVID-19 au Québec") +
+  xlab("Date") +
+  ylab("Daily Rate of increase in cumulative cases\n log(t_p) - log(t_p-1)-")
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+![](index_files/figure-html/graph-log-ratio-1.png)<!-- -->
+
 
 
 
@@ -444,6 +510,9 @@ ggplot() +
 ```
 
 ![](index_files/figure-html/graph-7-1.png)<!-- -->
+
+
+
 
 
 

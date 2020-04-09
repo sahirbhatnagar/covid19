@@ -1,6 +1,7 @@
 ## ---- load-packages ----
 pacman::p_load(jsonlite)
 pacman::p_load(tidyverse)
+pacman::p_load(tsibble) # for difference function
 pacman::p_load(lubridate)
 pacman::p_load(colorspace)
 pacman::p_load(ggthemes)
@@ -167,6 +168,41 @@ ggplot() +
   xlab("") +
   ylab("")
 
+
+
+## ---- graph-log-ratio ----
+
+pacman::p_load(locfit)
+
+DT1 %>%
+  filter(type == "Nombre cumulatif de cas") %>%
+  mutate(cases_logratio = tsibble::difference(log(value))) %>%
+  filter(
+    Date >= as.Date("2020-03-01")
+  ) %>%
+  ggplot(aes(x = Date, y = cases_logratio)) +
+  geom_point() +
+  geom_smooth(method = "locfit") +
+  # geom_smooth(method = "loess") +
+  # xlab("Date") +
+  ggthemes::theme_hc() +
+  scale_x_date(date_breaks = "1 day", date_labels = "%b %d") +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  # scale_y_continuous(
+  #   "Daily increase in cumulative cases",
+  #   breaks = log(1+seq(0,100,by=10)/100),
+  #   labels = paste0(seq(0,100,by=10),"%"),
+  #   minor_breaks=NULL
+  # ) +
+  colorspace::scale_fill_discrete_qualitative() +
+  colorspace::scale_color_discrete_qualitative() +
+  # labs(title = "1 - Évolution quotidienne des nouveaux cas et du nombre cumulatif de cas liés à la \nCOVID-19 au Québec") +
+  xlab("Date") +
+  ylab("Daily Rate of increase in cumulative cases\n log(t_p) - log(t_p-1)-")
 
 
 ## ---- clean-data-2 ----
