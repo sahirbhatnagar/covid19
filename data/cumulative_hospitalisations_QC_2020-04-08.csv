@@ -1,0 +1,51 @@
+Date,type,value
+2020-03-15,Hospitalisations,2
+2020-03-15,Soins intensifs,0
+2020-03-16,Hospitalisations,5
+2020-03-16,Soins intensifs,0
+2020-03-17,Hospitalisations,6
+2020-03-17,Soins intensifs,4
+2020-03-18,Hospitalisations,7
+2020-03-18,Soins intensifs,4
+2020-03-19,Hospitalisations,10
+2020-03-19,Soins intensifs,6
+2020-03-20,Hospitalisations,19
+2020-03-20,Soins intensifs,10
+2020-03-21,Hospitalisations,24
+2020-03-21,Soins intensifs,13
+2020-03-22,Hospitalisations,45
+2020-03-22,Soins intensifs,20
+2020-03-23,Hospitalisations,67
+2020-03-23,Soins intensifs,31
+2020-03-24,Hospitalisations,78
+2020-03-24,Soins intensifs,35
+2020-03-25,Hospitalisations,106
+2020-03-25,Soins intensifs,43
+2020-03-26,Hospitalisations,141
+2020-03-26,Soins intensifs,50
+2020-03-27,Hospitalisations,164
+2020-03-27,Soins intensifs,57
+2020-03-28,Hospitalisations,192
+2020-03-28,Soins intensifs,72
+2020-03-29,Hospitalisations,235
+2020-03-29,Soins intensifs,78
+2020-03-30,Hospitalisations,286
+2020-03-30,Soins intensifs,82
+2020-03-31,Hospitalisations,307
+2020-03-31,Soins intensifs,82
+2020-04-01,Hospitalisations,365
+2020-04-01,Soins intensifs,96
+2020-04-02,Hospitalisations,441
+2020-04-02,Soins intensifs,107
+2020-04-03,Hospitalisations,478
+2020-04-03,Soins intensifs,130
+2020-04-04,Hospitalisations,525
+2020-04-04,Soins intensifs,154
+2020-04-05,Hospitalisations,533
+2020-04-05,Soins intensifs,164
+2020-04-06,Hospitalisations,583
+2020-04-06,Soins intensifs,164
+2020-04-07,Hospitalisations,632
+2020-04-07,Soins intensifs,181
+2020-04-08,Hospitalisations,679
+2020-04-08,Soins intensifs,196

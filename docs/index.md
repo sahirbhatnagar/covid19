@@ -1,7 +1,7 @@
 ---
 title: "Quebec COVID19 Data April 3, 2020"
 author: "by Sahir Bhatnagar"
-date: "2020-04-05"
+date: "2020-04-09"
 output:
   html_document:
     toc: true
@@ -36,33 +36,37 @@ pacman::p_load(ggthemes)
 ```r
 # Data cleaning -----------------------------------------------------------
 
-graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/1/public/values?alt=json")
+# graph1 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/1/public/values?alt=json")
 
-ds1 <- graph1$feed$entry$`gs$cell`
-# need to add missing row for march 3 for nouveaux cas
-ds1 <- rbind(ds1[1:5, ], c(2, 3, 0, 0), ds1[-(1:5), ])
+# As of 8 april 2020, it seems the data is now in csv format
+DT1 <- readr::read_csv("https://www.inspq.qc.ca/sites/default/files/covid/donnees/graph1.csv?randNum=1586456549279",
+                          col_types = list(col_date("%d/%m/%Y"), col_double(), col_double()))
 
-DT1 <- ds1[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
+# ds1 <- graph1$feed$entry$`gs$cell`
+# # need to add missing row for march 3 for nouveaux cas
+# ds1 <- rbind(ds1[1:5, ], c(2, 3, 0, 0), ds1[-(1:5), ])
+#
+# DT1 <- ds1[-c(1:3), ] %>%
+#   mutate(
+#     row = as.numeric(as.character(row)),
+#     col = as.numeric(as.character(col))
+#   ) %>%
+#   rename(value = `$t`)
+#
 DT1 <- DT1 %>%
-  mutate(
-    type = rep(ds1$`$t`[1:3], max(DT1$row) - 1),
-    ID = rep(seq_len(max(DT1$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Nombre cumulatif de cas` = as.numeric(`Nombre cumulatif de cas`),
-    `Nouveaux cas` = as.numeric(`Nouveaux cas`)
-  ) %>%
+  # mutate(
+  #   type = rep(ds1$`$t`[1:3], max(DT1$row) - 1),
+  #   ID = rep(seq_len(max(DT1$row) - 1), each = 3)
+  # ) %>%
+  # dplyr::select(-row, -col, -numericValue) %>%
+  # pivot_wider(names_from = type, values_from = value) %>%
+  # mutate(
+  #   Date = lubridate::as_date(dmy(Date)),
+  #   `Nombre cumulatif de cas` = as.numeric(`Nombre cumulatif de cas`),
+  #   `Nouveaux cas` = as.numeric(`Nouveaux cas`)
+  # ) %>%
   pivot_longer(
-    cols = c(-ID, -Date),
+    cols = c(-Date),
     names_to = "type"
   ) %>%
   mutate(value = ifelse(value == 0, NA, value))
@@ -117,34 +121,35 @@ ggplot() +
 ```r
 # Data cleaning -----------------------------------------------------------
 
-graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/2/public/values?alt=json")
+# graph2 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/2/public/values?alt=json")
+DT2 <- readr::read_csv("https://www.inspq.qc.ca/sites/default/files/covid/donnees/graph2.csv?randNum=1586456549353",
+                       col_types = list(col_date("%d/%m/%Y"), col_double(), col_double()))
 
+# ds2 <- graph2$feed$entry$`gs$cell`
+# # need to add missing row for march 18 for nouveaux deces
+# ds2 <- rbind(ds2[1:5, ], c(2, 3, 0, 0), ds2[-(1:5), ])
 
-ds2 <- graph2$feed$entry$`gs$cell`
-# need to add missing row for march 18 for nouveaux deces
-ds2 <- rbind(ds2[1:5, ], c(2, 3, 0, 0), ds2[-(1:5), ])
-
-DT2 <- ds2[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
+# DT2 <- ds2[-c(1:3), ] %>%
+#   mutate(
+#     row = as.numeric(as.character(row)),
+#     col = as.numeric(as.character(col))
+#   ) %>%
+#   rename(value = `$t`)
 
 DT2 <- DT2 %>%
-  mutate(
-    type = rep(ds2$`$t`[1:3], max(DT2$row) - 1),
-    ID = rep(seq_len(max(DT2$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Nombre cumulatif de décès` = as.numeric(`Nombre cumulatif de décès`),
-    `Nouveaux décès` = as.numeric(`Nouveaux décès`)
-  ) %>%
+  # mutate(
+  #   type = rep(ds2$`$t`[1:3], max(DT2$row) - 1),
+  #   ID = rep(seq_len(max(DT2$row) - 1), each = 3)
+  # ) %>%
+  # dplyr::select(-row, -col, -numericValue) %>%
+  # pivot_wider(names_from = type, values_from = value) %>%
+  # mutate(
+  #   Date = lubridate::as_date(dmy(Date)),
+  #   `Nombre cumulatif de décès` = as.numeric(`Nombre cumulatif de décès`),
+  #   `Nouveaux décès` = as.numeric(`Nouveaux décès`)
+  # ) %>%
   pivot_longer(
-    cols = c(-ID, -Date),
+    cols = c(-Date),
     names_to = "type"
   ) %>%
   mutate(value = ifelse(value == 0, NA, value))
@@ -199,30 +204,33 @@ readr::write_csv(DT2, path = here::here(sprintf("data/cumulative_deaths_QC_%s.cs
 
 ```r
 # Data cleaning -----------------------------------------------------------
-graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/3/public/values?alt=json")
+# graph3 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/3/public/values?alt=json")
 
-ds3 <- graph3$feed$entry$`gs$cell`
-DT3 <- ds3[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
+DT3 <- readr::read_csv("https://www.inspq.qc.ca/sites/default/files/covid/donnees/graph3.csv?randNum=1586456549385",
+                       col_types = list(col_date("%d/%m/%Y"), col_double(), col_double()))
+
+# ds3 <- graph3$feed$entry$`gs$cell`
+# DT3 <- ds3[-c(1:3), ] %>%
+#   mutate(
+#     row = as.numeric(as.character(row)),
+#     col = as.numeric(as.character(col))
+#   ) %>%
+#   rename(value = `$t`)
 
 DT3 <- DT3 %>%
-  mutate(
-    type = rep(ds3$`$t`[1:3], max(DT3$row) - 1),
-    ID = rep(seq_len(max(DT3$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Hospitalisations` = as.numeric(`Hospitalisations`),
-    `Soins intensifs` = as.numeric(`Soins intensifs`)
-  ) %>%
+  # mutate(
+  #   type = rep(ds3$`$t`[1:3], max(DT3$row) - 1),
+  #   ID = rep(seq_len(max(DT3$row) - 1), each = 3)
+  # ) %>%
+  # dplyr::select(-row, -col, -numericValue) %>%
+  # pivot_wider(names_from = type, values_from = value) %>%
+  # mutate(
+  #   Date = lubridate::as_date(dmy(Date)),
+  #   `Hospitalisations` = as.numeric(`Hospitalisations`),
+  #   `Soins intensifs` = as.numeric(`Soins intensifs`)
+  # ) %>%
   pivot_longer(
-    cols = c(-ID, -Date),
+    cols = c(-Date),
     names_to = "type"
   )
 ```
@@ -282,31 +290,33 @@ readr::write_csv(DT3, path = here::here(sprintf("data/cumulative_hospitalisation
 ```r
 # Data cleaning -----------------------------------------------------------
 
-graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/4/public/values?alt=json")
+# graph4 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/4/public/values?alt=json")
+DT4 <- readr::read_csv("https://www.inspq.qc.ca/sites/default/files/covid/donnees/graph4.csv?randNum=1586456549424",
+                       col_types = list(col_date("%d/%m/%Y"), col_double(), col_double()))
 
-ds4 <- graph4$feed$entry$`gs$cell`
-DT4 <- ds4[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
+# ds4 <- graph4$feed$entry$`gs$cell`
+# DT4 <- ds4[-c(1:3), ] %>%
+#   mutate(
+#     row = as.numeric(as.character(row)),
+#     col = as.numeric(as.character(col))
+#   ) %>%
+#   rename(value = `$t`)
 
 DT4 <- DT4 %>%
-  mutate(
-    type = rep(ds4$`$t`[1:3], max(DT4$row) - 1),
-    ID = rep(seq_len(max(DT4$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    Date = lubridate::as_date(dmy(Date)),
-    `Cumul de personnes avec analyses négatives` = as.numeric(`Cumul de personnes avec analyses négatives`),
-    `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`)
-    # `Sous investigation` = as.numeric(`Sous investigation`)
-  ) %>%
+  # mutate(
+  #   type = rep(ds4$`$t`[1:3], max(DT4$row) - 1),
+  #   ID = rep(seq_len(max(DT4$row) - 1), each = 3)
+  # ) %>%
+  # dplyr::select(-row, -col, -numericValue) %>%
+  # pivot_wider(names_from = type, values_from = value) %>%
+  # mutate(
+  #   Date = lubridate::as_date(dmy(Date)),
+  #   `Cumul de personnes avec analyses négatives` = as.numeric(`Cumul de personnes avec analyses négatives`),
+  #   `Cumul de cas confirmés` = as.numeric(`Cumul de cas confirmés`)
+  #   # `Sous investigation` = as.numeric(`Sous investigation`)
+  # ) %>%
   pivot_longer(
-    cols = c(-ID, -Date),
+    cols = c(-Date),
     names_to = "type"
   )
 ```
@@ -316,7 +326,7 @@ DT4 <- DT4 %>%
 # Plot --------------------------------------------------------------------
 
 DT4 %>%
-  filter(type %in% c("Cumul de personnes avec analyses négatives", "Cumul de cas confirmés")) %>%
+  filter(type %in% c("Cumul des personnes avec des analyses négatives", "Cumul de cas confirmés")) %>%
   ggplot(mapping = aes(x = Date, y = value, color = type, fill = type)) +
   geom_line() +
   geom_point(size = 2, pch = 21) +
@@ -346,41 +356,56 @@ readr::write_csv(DT4, path = here::here(sprintf("data/cumulative_case_and_negati
 ```r
 # Data cleaning -----------------------------------------------------------
 
-graph7 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/6/public/values?alt=json")
-
-ds7 <- graph7$feed$entry$`gs$cell`
-
-DT7 <- ds7[-c(1:3), ] %>%
-  mutate(
-    row = as.numeric(as.character(row)),
-    col = as.numeric(as.character(col))
-  ) %>%
-  rename(value = `$t`)
-
-DT7 <- DT7 %>%
-  mutate(
-    type = rep(ds7$`$t`[1:3], max(DT7$row) - 1),
-    ID = rep(seq_len(max(DT7$row) - 1), each = 3)
-  ) %>%
-  dplyr::select(-row, -col, -numericValue) %>%
-  pivot_wider(names_from = type, values_from = value) %>%
-  mutate(
-    `Proportion de cas confirmés` = as.numeric(`Proportion de cas confirmés`),
-    `Taux pour 100 000` = as.numeric(`Taux pour 100 000`)
-  ) %>%
-  pivot_longer(
-    cols = c(-ID, -`Groupe d'âge`),
-    names_to = "type"
-  )
+# graph7 <- fromJSON("https://spreadsheets.google.com/feeds/cells/1kmCbHvJFHe70GZNqOTP-sHjYDvJ_pa7zn2-gJhCNP3g/6/public/values?alt=json")
 
 
-readr::write_csv(DT7, path = here::here(sprintf("data/cases_by_age_QC_%s.csv", max(DT1$Date))))
+# ds7 <- graph7$feed$entry$`gs$cell`
+#
+# DT7 <- ds7[-c(1:3), ] %>%
+#   mutate(
+#     row = as.numeric(as.character(row)),
+#     col = as.numeric(as.character(col))
+#   ) %>%
+#   rename(value = `$t`)
+#
+# DT7 <- DT7 %>%
+#   mutate(
+#     type = rep(ds7$`$t`[1:3], max(DT7$row) - 1),
+#     ID = rep(seq_len(max(DT7$row) - 1), each = 3)
+#   ) %>%
+#   dplyr::select(-row, -col, -numericValue) %>%
+#   pivot_wider(names_from = type, values_from = value) %>%
+#   mutate(
+#     `Proportion de cas confirmés` = as.numeric(`Proportion de cas confirmés`),
+#     `Taux pour 100 000` = as.numeric(`Taux pour 100 000`)
+#   ) %>%
+#   pivot_longer(
+#     cols = c(-ID, -`Groupe d'âge`),
+#     names_to = "type"
+#   )
+#
+#
+# readr::write_csv(DT7, path = here::here(sprintf("data/cases_by_age_QC_%s.csv", max(DT1$Date))))
 ```
 
 
 ```r
 # Plot --------------------------------------------------------------------
 
+DT7 <- read_csv(here::here("data/cases_by_age_QC_2020-04-03.csv"))
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   ID = col_double(),
+##   `Groupe d'âge` = col_character(),
+##   type = col_character(),
+##   value = col_double()
+## )
+```
+
+```r
 ggplot() +
   geom_col(
     data = filter(DT7, type == "Proportion de cas confirmés"),

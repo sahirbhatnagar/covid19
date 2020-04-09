@@ -3,6 +3,12 @@
 
 # Quebec Covid19 data
 
+## UPDATE April 8, 2020
+
+The data is now in `.csv` format directly, so no need to parse JSON.
+
+## March 31, 2020
+
 I parsed the `JSON` behind [the INSPQ
 highcharts](https://www.inspq.qc.ca/covid-19/donnees) using `R` and
 reproduced the graphs with `ggplot2`.
@@ -35,6 +41,14 @@ reproduced the graphs with `ggplot2`.
 ![](README_files/figure-gfm/graph-4-1.png)<!-- -->
 
 # 7 - Cas confirmés selon le groupe d’âge (répartition et taux pour 100 000)
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   ID = col_double(),
+    ##   `Groupe d'âge` = col_character(),
+    ##   type = col_character(),
+    ##   value = col_double()
+    ## )
 
 ![](README_files/figure-gfm/graph-7-1.png)<!-- -->
 
